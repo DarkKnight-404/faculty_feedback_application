@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Feedback Portal</title>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@4.1.17/dist/framer-motion.js"></script>
+    <style>
+        /* Basic container styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fb;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #4c6ef5;
+            color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #3b54b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background: white;
+        }
+
+        .main-content h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            padding: 12px 20px;
+            background: #4c6ef5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .status-card {
+            margin-top: 30px;
+            padding: 20px;
+            background: #e0f7e0;
+            border-radius: 5px;
+            border: 1px solid #76e076;
+        }
+
+        .status-card p {
+            font-size: 16px;
+        }
+
+        .status-card h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Feedback Portal</h2>
+            <div>
+                <label for="faculty">Select Faculty</label>
+                <select id="faculty" onchange="updateFaculty()">
+                    <option value="" id="faculty_list">Select Faculty</option>
+                    <!-- Faculty options will be dynamically added here -->
+                    <!-- <option value="Faculty 1">Faculty 1</option>
+                    <option value="Faculty 2">Faculty 2</option>
+                    <option value="Faculty 3">Faculty 3</option> -->
+                </select>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Feedback Form</h2>
+            <p>Share your valuable feedback</p>
+
+            <form id="feedback-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject">
+                        <option value="Subject 1">Subject 1</option>
+                        <option value="Subject 2">Subject 2</option>
+                        <option value="Subject 3">Subject 3</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5" placeholder="Rate between 1 to 5"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="comments">Additional Comments</label>
+                    <textarea id="comments" name="comments" rows="4" placeholder="Your comments here"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Feedback</button>
+            </form>
+
+            <!-- Status Card -->
+            <div class="status-card" id="status-card">
+                <h4>Feedback Status</h4>
+                <p>Your feedback helps us improve the learning experience.</p>
+                <p id="status-message">Feedback Received</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate fetching faculty data from the backend
+        async function fetchFacultyData() {
+            try {
+                let xml = new XMLHttpRequest();
+                xml.open("GET",'/faculty');
+                xml.send();
+                xml.onload = ()=>{
+                    let data = JSON.parse(xml.response);
+                    let str = `<option value="" id="faculty_list">Select Faculty</option>`;
+                    data.forEach(element => {
+                        str+=`<option value="${element.name}">${element.name}</option>`
+                    });
+                    console.log(str);
+                    document.getElementById('faculty').innerHTML = str
+                }
+            } catch (error) {
+                console.error('Error fetching faculty data:', error);
+            }
+        }
+
+        // Call the function to load faculty data when the page loads
+        window.onload = fetchFacultyData;
+
+        // Handle feedback form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const faculty = document.getElementById('faculty').value;
+            const subject = document.getElementById('subject').value;
+            const rating = document.getElementById('rating').value;
+            const comments = document.getElementById('comments').value;
+
+            // alert(`Feedback submitted!\nFaculty: ${faculty}\nSubject: ${subject}\nRating: ${rating}\nComments: ${comments}`);
+
+            const xml = new XMLHttpRequest();
+            // xml.setRequestHeader("Content-Type", "application/text");
+            xml.open("post",'/submitfeedback');
+            xml.send(JSON.stringify({
+                faculty,
+                subject,
+                rating,
+                comments
+            }))
+            xml.onload = ()=>{
+                // alert(JSON.parse(xml.response).status);
+                if(!JSON.parse(xml.response).status){
+                    alert(JSON.parse(xml.response).err)
+                }
+                window.location.reload();
+            }
+            xml.onerror = ()=>{
+                alert("check server request is not reaching server")
+            }
+            // Optionally, send this data to the server via a POST request
+        }
+
+        // Update faculty selection (additional logic could be added if needed)
+        function updateFaculty() {
+            const faculty = document.getElementById('faculty').value;
+            console.log('Selected Faculty:', faculty);
+        }
+    </script>
+
+</body>
+
+</html>
