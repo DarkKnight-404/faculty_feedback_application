@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql2');
-require('dotenv').config();
+// require('dotenv').config();
 
 
 
@@ -46,7 +46,7 @@ emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=
 
 app.use(express.text());
 
-let port = process.env.port || 3001;
+let port = 3001;
 
 // MySQL Database Connection
 const connection = mysql.createConnection({
