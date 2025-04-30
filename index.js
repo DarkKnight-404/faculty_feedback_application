@@ -170,6 +170,6 @@ VALUES ('${name}', '${department}', '${email}', '${subjects}', '${profile_pic}',
 
 })
 
-app.listen(process.env.PORT || port, () => {
+app.listen(process.env.PORT || 3002, () => {
     console.log(`Server is running on port ${process.env.PORT || port}`);
 });
