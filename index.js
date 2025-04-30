@@ -76,7 +76,7 @@ app.use(express.static('public'));
 app.get('/faculty', (req, res) => {
     connection.query('SELECT * FROM faculty', (err, results) => {
         if (err) {
-            res.status(500).json({ error: 'Database query error' });
+            res.status(500).json({ error: 'Database query error : ' + JSON.stringify(err)});
         } else {
             res.json(results);  // Send data as JSON
         }
