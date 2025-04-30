@@ -73,11 +73,18 @@ app.use(express.static('public'));
 
 // Route to send the faculty data as JSON
 app.get('/faculty', (req, res) => {
+
     connection.query('SELECT * FROM faculty', (err, results) => {
         if (err) {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
-            res.status(500).json({ error: 'Database query error', err: err });
+            console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection.connect((err2) => {
+                if (err) {
+                    console.error('Error connecting to the database: ' + err2);
+                    res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }
+            });
         } else {
             res.json(results);  // Send data as JSON
         }
@@ -91,7 +98,13 @@ app.get('/reviewData', (req, res) => {
         if (err) {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
-            res.status(500).json({ error: 'Database query error', err: err });
+            console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection.connect((err2) => {
+                if (err) {
+                    console.error('Error connecting to the database: ' + err2);
+                    res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }
+            });
         } else {
             res.json(results);  // Send data as JSON
         }
@@ -105,7 +118,13 @@ app.get('/ratingdata', (req, res) => {
         if (err) {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
-            res.status(500).json({ error: 'Database query error', err: err });
+            console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection.connect((err2) => {
+                if (err) {
+                    console.error('Error connecting to the database: ' + err2);
+                    res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }
+            });
         } else {
             res.json(results);  // Send data as JSON
         }
@@ -121,7 +140,13 @@ app.post("/submitfeedback", (req, resp) => {
         if (err) {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
-            res.status(500).json({ error: 'Database query error', err: err });
+            console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection.connect((err2) => {
+                if (err) {
+                    console.error('Error connecting to the database: ' + err2);
+                    res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }
+            });
         } else {
             console.log(res)
             resp.send({ status: true })
@@ -138,14 +163,30 @@ app.post("/removeFaculty", (req, res) => {
 
     connection.query(`delete from faculty where name = "${name}";`, (err, res) => {
         if (err) {
-            console.log(err)
+            console.log("got error in sql fetching")
+            console.log(JSON.stringify(err));
+            console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection.connect((err2) => {
+                if (err) {
+                    console.error('Error connecting to the database: ' + err2);
+                    res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }
+            });
         } else {
             console.log(res)
         }
     })
     connection.query(`delete from feedback where facultyName = "${name}";`, (err, res) => {
         if (err) {
-            console.log(err)
+            console.log("got error in sql fetching")
+            console.log(JSON.stringify(err));
+            console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection.connect((err2) => {
+                if (err) {
+                    console.error('Error connecting to the database: ' + err2);
+                    res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }
+            });
         } else {
             console.log(res)
         }
@@ -168,7 +209,15 @@ app.post("/addfaculty", (req, res) => {
 VALUES ('${name}', '${department}', '${email}', '${subjects}', '${profile_pic}', 0, 0);
 `, (err, resp) => {
         if (err) {
-            console.log(err)
+            console.log("got error in sql fetching")
+            console.log(JSON.stringify(err));
+            console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection.connect((err2) => {
+                if (err) {
+                    console.error('Error connecting to the database: ' + err2);
+                    res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }
+            });
         } else {
             console.log(resp)
             res.send({ status: "success" })
