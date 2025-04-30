@@ -75,7 +75,7 @@ app.use(express.static('public'));
 app.get('/faculty', (req, res) => {
     connection.query('SELECT * FROM faculty', (err, results) => {
         if (err) {
-            res.status(500).json({ error: 'Database query error : ' + JSON.stringify(err)});
+            res.status(500).json({ error: 'Database query error : ' + JSON.stringify(err) });
         } else {
             res.json(results);  // Send data as JSON
         }
@@ -114,10 +114,10 @@ app.post("/submitfeedback", (req, resp) => {
     connection.query(`insert into feedback (facultyName, feedback, rating) values ("${data.faculty}","${data.comments}",${data.rating})`, (err, res) => {
         if (err) {
             console.log(err)
-            resp.send({status: false, err})
+            resp.send({ status: false, err })
         } else {
             console.log(res)
-            resp.send({status: true})
+            resp.send({ status: true })
         }
     })
 })
@@ -170,6 +170,6 @@ VALUES ('${name}', '${department}', '${email}', '${subjects}', '${profile_pic}',
 
 })
 
-app.listen(process.env.PORT || 3002, () => {
+app.listen(process.env.PORT || 3002, '0.0.0.0', () => {
     console.log(`Server is running on port ${process.env.PORT || port}`);
 });
