@@ -75,8 +75,9 @@ app.use(express.static('public'));
 app.get('/faculty', (req, res) => {
     connection.query('SELECT * FROM faculty', (err, results) => {
         if (err) {
+            console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
-            res.status(500).json({ error: 'Database query error : ' + JSON.stringify(err) });
+            res.status(500).json({ error: 'Database query error', err: err });
         } else {
             res.json(results);  // Send data as JSON
         }
@@ -88,8 +89,9 @@ app.get('/reviewData', (req, res) => {
     console.log("got review data req")
     connection.query('SELECT * FROM feedback', (err, results) => {
         if (err) {
+            console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
-            res.status(500).json({ error: 'Database query error' });
+            res.status(500).json({ error: 'Database query error', err: err });
         } else {
             res.json(results);  // Send data as JSON
         }
@@ -101,7 +103,9 @@ app.get('/ratingdata', (req, res) => {
     console.log("sending rating data");
     connection.query('select facultyName,avg(rating) as avgRating,count(*) as ratingCount from feedback group by facultyName', (err, results) => {
         if (err) {
-            res.status(500).json({ error: 'Database query error' });
+            console.log("got error in sql fetching")
+            console.log(JSON.stringify(err));
+            res.status(500).json({ error: 'Database query error', err: err });
         } else {
             res.json(results);  // Send data as JSON
         }
@@ -115,8 +119,9 @@ app.post("/submitfeedback", (req, resp) => {
 
     connection.query(`insert into feedback (facultyName, feedback, rating) values ("${data.faculty}","${data.comments}",${data.rating})`, (err, res) => {
         if (err) {
-            console.log(err)
-            resp.send({ status: false, err })
+            console.log("got error in sql fetching")
+            console.log(JSON.stringify(err));
+            res.status(500).json({ error: 'Database query error', err: err });
         } else {
             console.log(res)
             resp.send({ status: true })
