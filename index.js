@@ -48,7 +48,7 @@ app.use(express.text());
 let port = 3001;
 
 // MySQL Database Connection
-const connection = mysql.createConnection({
+let connection = mysql.createConnection({
     host: 'gateway01.us-east-1.prod.aws.tidbcloud.com',
     user: '2ALCrVvP4zHSppn.root',
     password: '8c7uLPnRXq3wDMO0',
@@ -79,10 +79,23 @@ app.get('/faculty', (req, res) => {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
             console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection = mysql.createConnection({
+                host: 'gateway01.us-east-1.prod.aws.tidbcloud.com',
+                user: '2ALCrVvP4zHSppn.root',
+                password: '8c7uLPnRXq3wDMO0',
+                database: 'faculty_feedback',
+                port: '4000',
+                ssl: {
+                    ca: ca
+                }
+
+            });
             connection.connect((err2) => {
-                if (err) {
+                if (err2) {
                     console.error('Error connecting to the database: ' + err2);
                     res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }else{
+                    console.log("tidb servver reconnected refresh");
                 }
             });
         } else {
@@ -99,10 +112,23 @@ app.get('/reviewData', (req, res) => {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
             console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection = mysql.createConnection({
+                host: 'gateway01.us-east-1.prod.aws.tidbcloud.com',
+                user: '2ALCrVvP4zHSppn.root',
+                password: '8c7uLPnRXq3wDMO0',
+                database: 'faculty_feedback',
+                port: '4000',
+                ssl: {
+                    ca: ca
+                }
+
+            });
             connection.connect((err2) => {
-                if (err) {
+                if (err2) {
                     console.error('Error connecting to the database: ' + err2);
                     res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }else{
+                    console.log("tidb servver reconnected refresh");
                 }
             });
         } else {
@@ -119,10 +145,23 @@ app.get('/ratingdata', (req, res) => {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
             console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection = mysql.createConnection({
+                host: 'gateway01.us-east-1.prod.aws.tidbcloud.com',
+                user: '2ALCrVvP4zHSppn.root',
+                password: '8c7uLPnRXq3wDMO0',
+                database: 'faculty_feedback',
+                port: '4000',
+                ssl: {
+                    ca: ca
+                }
+
+            });
             connection.connect((err2) => {
-                if (err) {
+                if (err2) {
                     console.error('Error connecting to the database: ' + err2);
                     res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }else{
+                    console.log("tidb servver reconnected refresh");
                 }
             });
         } else {
@@ -141,10 +180,23 @@ app.post("/submitfeedback", (req, resp) => {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
             console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection = mysql.createConnection({
+                host: 'gateway01.us-east-1.prod.aws.tidbcloud.com',
+                user: '2ALCrVvP4zHSppn.root',
+                password: '8c7uLPnRXq3wDMO0',
+                database: 'faculty_feedback',
+                port: '4000',
+                ssl: {
+                    ca: ca
+                }
+
+            });
             connection.connect((err2) => {
-                if (err) {
+                if (err2) {
                     console.error('Error connecting to the database: ' + err2);
                     res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }else{
+                    console.log("tidb servver reconnected refresh");
                 }
             });
         } else {
@@ -166,10 +218,23 @@ app.post("/removeFaculty", (req, res) => {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
             console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection = mysql.createConnection({
+                host: 'gateway01.us-east-1.prod.aws.tidbcloud.com',
+                user: '2ALCrVvP4zHSppn.root',
+                password: '8c7uLPnRXq3wDMO0',
+                database: 'faculty_feedback',
+                port: '4000',
+                ssl: {
+                    ca: ca
+                }
+
+            });
             connection.connect((err2) => {
-                if (err) {
+                if (err2) {
                     console.error('Error connecting to the database: ' + err2);
                     res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }else{
+                    console.log("tidb servver reconnected refresh");
                 }
             });
         } else {
@@ -181,10 +246,23 @@ app.post("/removeFaculty", (req, res) => {
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
             console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection = mysql.createConnection({
+                host: 'gateway01.us-east-1.prod.aws.tidbcloud.com',
+                user: '2ALCrVvP4zHSppn.root',
+                password: '8c7uLPnRXq3wDMO0',
+                database: 'faculty_feedback',
+                port: '4000',
+                ssl: {
+                    ca: ca
+                }
+
+            });
             connection.connect((err2) => {
-                if (err) {
+                if (err2) {
                     console.error('Error connecting to the database: ' + err2);
                     res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }else{
+                    console.log("tidb servver reconnected refresh");
                 }
             });
         } else {
@@ -212,10 +290,23 @@ VALUES ('${name}', '${department}', '${email}', '${subjects}', '${profile_pic}',
             console.log("got error in sql fetching")
             console.log(JSON.stringify(err));
             console.log("trying to reconnect to database tidb cloud cluster 0 ");
+            connection = mysql.createConnection({
+                host: 'gateway01.us-east-1.prod.aws.tidbcloud.com',
+                user: '2ALCrVvP4zHSppn.root',
+                password: '8c7uLPnRXq3wDMO0',
+                database: 'faculty_feedback',
+                port: '4000',
+                ssl: {
+                    ca: ca
+                }
+
+            });
             connection.connect((err2) => {
-                if (err) {
+                if (err2) {
                     console.error('Error connecting to the database: ' + err2);
                     res.status(500).json({ error: 'request cant be resolved ', err: err });
+                }else{
+                    console.log("tidb servver reconnected refresh");
                 }
             });
         } else {
